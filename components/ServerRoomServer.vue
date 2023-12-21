@@ -20,11 +20,14 @@ export default defineComponent({
   methods: {
     openServerScreen() {
       this.gameStore.notify({
-        actor: ActorType.Character,
-        type: CharacterEvents.ActiveSeen,
-        payload: { x, y },
-      });
-    },
+        actor: ActorType.Scene,
+        type: SceneEvents.ChangeActiveSeen,
+        payload: { },
+      })
+      // play scene sound
+      // open scene view
+      .then( () => this.$router.push("/scene"))
+        },
   },
 });
 </script>

@@ -17,6 +17,10 @@ export enum CharacterEvents {
   Stop = 'stop'
 }
 
+export enum SceneEvents {
+  ChangeActiveSeen = 'changeActiveScene'
+}
+
 export interface GameEvent {
   actor: ActorType
   type: CharacterEvents | string
