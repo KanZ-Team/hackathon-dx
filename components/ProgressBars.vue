@@ -133,7 +133,6 @@ export default defineComponent({
 #progress-bar-money {
   height: 100%;
   background-color: #031803;
-  transition: width 1s ease-in-out;
   width: 200%; /* Genişliği iki katına çıkar */
 }
 </style>
