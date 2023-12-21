@@ -14,7 +14,8 @@ export enum ActorType {
 
 export enum CharacterEvents {
   Move = 'move',
-  Stop = 'stop'
+  Stop = 'stop',
+  Pet = 'pet'
 }
 
 export enum SceneEvents {

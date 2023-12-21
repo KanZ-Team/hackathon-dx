@@ -1,9 +1,13 @@
 <template>
   <Debug />
   <div class="campus">
+    <ProgressBars />
     <CampusTiles />
     <ServerRoomDoorOutside />
     <Character />
+    <MayaTheDog debug />
+    <LucyTheCat debug />
+    <LokiTheCat debug />
   </div>
 </template>
 
@@ -24,10 +28,10 @@ export default defineComponent({
 });
 </script>
 
-<style>
-.server-room {
+<style lang="scss">
+.campus {
   background-color: #9fc2c4;
-  background-image: url("/resources/rooms/server-room.png");
+  background-image: url("/resources/rooms/campus.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -35,5 +39,10 @@ export default defineComponent({
   width: 9rem;
   position: relative;
   overflow: hidden;
+  .character {
+    filter: drop-shadow(0px 0px 1px black) drop-shadow(0px 0px 1px black)
+      drop-shadow(0px 0px 1px black) drop-shadow(0px 0px 1px black)
+      drop-shadow(0px 0px 1px black);
+  }
 }
 </style>
