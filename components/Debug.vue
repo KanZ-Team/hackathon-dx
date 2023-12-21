@@ -3,9 +3,10 @@
     <pre
       >{{
         {
+          time: gameStore.time,
           load: gameStore.load,
           character: gameStore.character,
-          servers: gameStore.servers,
+          servers: gameStore.servers
         }
       }}
     </pre>
@@ -13,12 +14,12 @@
 </template>
 
 <script>
-import { mapStores } from "pinia";
+import { mapStores } from 'pinia'
 export default defineComponent({
   computed: {
-    ...mapStores(useGameStore),
-  },
-});
+    ...mapStores(useGameStore)
+  }
+})
 </script>
 
 <style lang="scss">
