@@ -2,6 +2,7 @@
   <Debug />
   <div class="server-room game-area">
     <ServerRoomTiles />
+    <ServerRoomSwitch />
     <ServerRoomDoor />
     <ServerRoomServer />
     <Character />
@@ -10,27 +11,27 @@
 </template>
 
 <script>
-import { mapStores } from 'pinia'
-import Character from '~/components/Character.vue'
+import { mapStores } from "pinia";
+import Character from "~/components/Character.vue";
 
 // https://vuejs.org/guide/extras/render-function.html
 export default defineComponent({
-  name: 'Index',
+  name: "Index",
   computed: {
-    ...mapStores(useGameStore)
+    ...mapStores(useGameStore),
   },
   mounted() {
-    console.log('Index page mounted', this)
-    this.gameStore.start()
+    console.log("Index page mounted", this);
+    this.gameStore.start();
   },
-  components: { Character }
-})
+  components: { Character },
+});
 </script>
 
 <style>
 .server-room {
   background-color: #9fc2c4;
-  background-image: url('/resources/rooms/server-room.png');
+  background-image: url("/resources/rooms/server-room.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
