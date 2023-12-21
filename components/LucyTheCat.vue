@@ -30,7 +30,10 @@ export default defineComponent({
           this.gameStore.notify({
             actor: ActorType.Character,
             type: CharacterEvents.Pet,
-            payload: {}
+            payload: {
+              name: 'lucy',
+              sound: '690620__rareguy27__cat-purr.mp3'
+            }
           })
         )
       // pet cat sound

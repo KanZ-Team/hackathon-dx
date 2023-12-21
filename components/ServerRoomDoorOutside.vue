@@ -3,7 +3,6 @@
 </template>
 
 <script>
-import { chain } from '@/helpers'
 import { mapStores } from 'pinia'
 import { ActorType, CharacterEvents } from '@/stores/game'
 
@@ -24,7 +23,7 @@ export default defineComponent({
         .notify({
           actor: ActorType.Character,
           type: CharacterEvents.Move,
-          payload: { x: 3, y: 0 }
+          payload: { x: 2, y: 0 }
         })
         // play door sound
         .then(() =>

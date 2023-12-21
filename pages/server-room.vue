@@ -28,7 +28,6 @@ export default defineComponent({
   },
   mounted() {
     this.$refs.chirping.volume = 0.02
-    console.log('Index page mounted', this)
     this.gameStore.notify({
       actor: ActorType.Character,
       type: CharacterEvents.Move,

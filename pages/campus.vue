@@ -28,9 +28,14 @@ export default defineComponent({
     ...mapStores(useGameStore)
   },
   mounted() {
-    this.gameStore.changeLocation('campus')
+    this.gameStore.notify({
+      actor: ActorType.Character,
+      type: CharacterEvents.Move,
+      payload: { x: 2, y: 0 }
+    })
     this.$refs.chirping.volume = 0.1
-    console.log('Index page mounted', this)
+    this.gameStore.changeLocation('campus')
+    this.gameStore.start()
   },
   components: { Character }
 })

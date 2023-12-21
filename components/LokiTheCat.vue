@@ -30,7 +30,10 @@ export default defineComponent({
           this.gameStore.notify({
             actor: ActorType.Character,
             type: CharacterEvents.Pet,
-            payload: {}
+            payload: {
+              name: 'loki',
+              sound: '690620__rareguy27__cat-purr.mp3'
+            }
           })
         )
       // increase mood

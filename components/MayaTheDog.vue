@@ -30,7 +30,10 @@ export default defineComponent({
           this.gameStore.notify({
             actor: ActorType.Character,
             type: CharacterEvents.Pet,
-            payload: {}
+            payload: {
+              name: 'maya',
+              sound: '420097__14gpanskazakopcanik_jonas__13-01-dog-_bark.mp3'
+            }
           })
         )
       // pet dog sound

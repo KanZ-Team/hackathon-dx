@@ -38,6 +38,13 @@ export enum ServerStatus {
 const soundManager = {
   play: (sound: string) => {
     console.log('playing sound', sound)
+    // play walk sound
+    // add audio element to the dom
+    if (typeof window === 'undefined') return
+    const audio = document.createElement('audio')
+    audio.volume = 1
+    audio.src = '/resources/sounds/' + sound
+    audio.play()
   }
 }
 
@@ -100,6 +107,8 @@ function getAverageTemp({ servers }: any) {
   return avgTemp
 }
 
+const petTimeout = 2000
+
 export const useGameStore = defineStore('game', {
   state: () => ({
     started: false,
@@ -112,7 +121,8 @@ export const useGameStore = defineStore('game', {
       y: 2,
       state: CharacterState.Idle,
       mood: 0,
-      money: 0
+      money: 0,
+      petTimes: {}
     },
     servers: [
       {
@@ -168,7 +178,7 @@ export const useGameStore = defineStore('game', {
         }
         const heatGenerated = 0.8 / Math.sqrt(this.time - this.heatUpTime)
 
-        console.log('heatGenerated', heatGenerated)
+        //console.log('heatGenerated', heatGenerated)
         addServerHeatUp({ servers, heatGenerated })
       } else {
         this.heatUpTime = -1
@@ -195,6 +205,12 @@ export const useGameStore = defineStore('game', {
         event.actor === ActorType.Character &&
         event.type === CharacterEvents.Move
       ) {
+        if (
+          this.character.x === event.payload.x &&
+          this.character.y === event.payload.y
+        )
+          return
+        soundManager.play('697182__znukem__single-footstep.mp3')
         this.character.x = event.payload.x
         this.character.y = event.payload.y
         this.character.state = CharacterState.Walking
@@ -206,6 +222,21 @@ export const useGameStore = defineStore('game', {
         event.type === CharacterEvents.Stop
       ) {
         this.character.state = CharacterState.Idle
+      }
+      if (
+        event.actor === ActorType.Character &&
+        event.type === CharacterEvents.Pet
+      ) {
+        if (
+          !this.character.petTimes[event.payload.name] ||
+          this.time - this.character.petTimes[event.payload.name] > petTimeout
+        ) {
+          console.log(this.time, this.character.petTimes[event.payload.name])
+          // check if lucy has been petted before
+          this.character.petTimes[event.payload.name] = this.time
+          this.character.mood = Math.min(1, this.character.mood + 0.1)
+          soundManager.play(event.payload.sound)
+        }
       }
       if (event.actor === ActorType.Sound) {
         ;(soundManager as any)[event.type]?.(event.payload)
