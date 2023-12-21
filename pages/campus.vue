@@ -1,37 +1,37 @@
 <template>
   <Debug />
-  <div class="campus">
+  <div class="campus game-area">
     <ProgressBars />
-    <CampusTiles />
+    <ServerRoomTiles />
     <ServerRoomDoorOutside />
     <Character />
-    <MayaTheDog debug />
-    <LucyTheCat debug />
-    <LokiTheCat debug />
+    <MayaTheDog />
+    <LucyTheCat />
+    <LokiTheCat />
   </div>
 </template>
 
 <script>
-import { mapStores } from "pinia";
-import Character from "~/components/Character.vue";
+import { mapStores } from 'pinia'
+import Character from '~/components/Character.vue'
 
 // https://vuejs.org/guide/extras/render-function.html
 export default defineComponent({
-  name: "Index",
+  name: 'Index',
   computed: {
-    ...mapStores(useGameStore),
+    ...mapStores(useGameStore)
   },
   mounted() {
-    console.log("Index page mounted", this);
+    console.log('Index page mounted', this)
   },
-  components: { Character },
-});
+  components: { Character }
+})
 </script>
 
 <style lang="scss">
 .campus {
   background-color: #9fc2c4;
-  background-image: url("/resources/rooms/campus.png");
+  background-image: url('/resources/rooms/campus.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -43,6 +43,10 @@ export default defineComponent({
     filter: drop-shadow(0px 0px 1px black) drop-shadow(0px 0px 1px black)
       drop-shadow(0px 0px 1px black) drop-shadow(0px 0px 1px black)
       drop-shadow(0px 0px 1px black);
+  }
+
+  .tiles {
+    width: 11.4rem;
   }
 }
 </style>

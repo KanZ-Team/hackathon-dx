@@ -3,34 +3,42 @@
 </template>
 
 <script>
-import { mapStores } from "pinia";
-import { ActorType, CharacterEvents } from "@/stores/game";
+import { mapStores } from 'pinia'
+import { ActorType, CharacterEvents } from '@/stores/game'
 
 export default defineComponent({
   computed: {
-    ...mapStores(useGameStore),
+    ...mapStores(useGameStore)
   },
   props: {
     debug: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   methods: {
     petTheCat() {
-      console.log("petTheCat");
-
-      this.gameStore.notify({
-        actor: ActorType.Character,
-        type: CharacterEvents.Pet,
-        payload: {},
-      });
+      console.log('petTheCat')
+      this.gameStore
+        .notify({
+          actor: ActorType.Character,
+          type: CharacterEvents.Move,
+          payload: { x: 6, y: 5 }
+        })
+        // pet cat sound
+        .then(() =>
+          this.gameStore.notify({
+            actor: ActorType.Character,
+            type: CharacterEvents.Pet,
+            payload: {}
+          })
+        )
       // pet cat sound
 
       // increase mood
-    },
-  },
-});
+    }
+  }
+})
 </script>
 
 <style lang="scss">

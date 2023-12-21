@@ -3,41 +3,44 @@
 </template>
 
 <script>
-import { mapStores } from "pinia";
+import { mapStores } from 'pinia'
 export default defineComponent({
   props: {
     debug: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   computed: {
     ...mapStores(useGameStore),
     styles() {
-      if (typeof window === "undefined") return {};
+      if (typeof document === 'undefined') return {}
 
-      const nthChild = this.gameStore.character.y * 8 + this.gameStore.character.x + 1;
+      const nthChild =
+        this.gameStore.character.y * 8 + this.gameStore.character.x + 1
 
       const tileBounds = document
-        .querySelector(".tile:nth-child(" + nthChild + ")")
-        .getBoundingClientRect();
+        .querySelector('.tile:nth-child(' + nthChild + ')')
+        ?.getBoundingClientRect()
       const gameAreaBounds = document
-        .querySelector(".server-room")
-        .getBoundingClientRect();
+        .querySelector('.game-area')
+        ?.getBoundingClientRect()
+
+      if (!tileBounds || !gameAreaBounds) return {}
       const diff = {
         x: tileBounds.left - gameAreaBounds.left,
-        y: tileBounds.top - gameAreaBounds.top,
-      };
+        y: tileBounds.top - gameAreaBounds.top
+      }
 
-      console.log("styles", nthChild);
+      console.log('styles', nthChild)
 
       return {
         left: `${diff.x}px`,
-        top: `calc(${diff.y}px - var(--character-height) + 0.4rem)`,
-      };
-    },
-  },
-});
+        top: `calc(${diff.y}px - var(--character-height) + 0.4rem)`
+      }
+    }
+  }
+})
 </script>
 
 <style lang="scss">
@@ -51,7 +54,7 @@ export default defineComponent({
   left: 0;
   /* click through */
   pointer-events: none;
-  background-image: url("/resources/characters/player.png");
+  background-image: url('/resources/characters/player.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

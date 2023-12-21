@@ -156,6 +156,7 @@ export const useGameStore = defineStore('game', {
         console.log('heatGenerated', heatGenerated)
         addServerHeatUp({ servers, heatGenerated })
       } else {
+        this.heatUpTime = -1
         coolDownServers({ servers })
       }
     },
