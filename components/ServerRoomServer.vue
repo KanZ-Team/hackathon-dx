@@ -19,21 +19,22 @@ export default defineComponent({
   },
   methods: {
     openServerScreen() {
-      this.gameStore.notify({
-        actor: ActorType.Scene,
-        type: SceneEvents.ChangeActiveSeen,
-        payload: { },
-      })
-      // play scene sound
-      // open scene view
-      .then( () => this.$router.push("/scene"))
-        },
+      this.gameStore
+        .notify({
+          actor: ActorType.Scene,
+          type: SceneEvents.ChangeActiveSeen,
+          payload: {},
+        })
+        // play scene sound
+        // open scene view
+        .then(() => this.$router.push("/servers"));
+    },
   },
 });
 </script>
 
 <style lang="scss">
-.server-left{
+.server-left {
   width: 4.3rem;
   height: 4.2rem;
   top: 3.2rem;
@@ -41,13 +42,14 @@ export default defineComponent({
   transform: perspective(46vw) rotateY(69deg) rotateX(182deg);
 }
 
-.server-right{
+.server-right {
   right: 0;
   width: 3.9rem;
   height: 3.5rem;
   top: 3.6rem;
   margin-left: 2rem;
-  transform: perspective(46vw) rotateY(285deg) rotateX(181deg) translateX(1.8rem);
+  transform: perspective(46vw) rotateY(285deg) rotateX(181deg)
+    translateX(1.8rem);
 }
 .server-left,
 .server-right {
