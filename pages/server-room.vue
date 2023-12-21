@@ -2,11 +2,14 @@
   <Debug />
   <div class="server-room">
     <ServerRoomTiles />
+    <ServerRoomDoor />
+    <Character />
   </div>
 </template>
 
 <script>
 import { mapStores } from "pinia";
+import Character from "~/components/Character.vue";
 
 // https://vuejs.org/guide/extras/render-function.html
 export default defineComponent({
@@ -17,6 +20,7 @@ export default defineComponent({
   mounted() {
     console.log("Index page mounted", this);
   },
+  components: { Character },
 });
 </script>
 

@@ -1,11 +1,5 @@
 <template>
-  <div class="tiles" :class="{ debug }">
-    <div
-      class="tile"
-      v-for="i in 48"
-      @click="moveToTile((i - 1) % 8, ~~((i - 1) / 8))"
-    ></div>
-  </div>
+  <div class="door" :class="{ debug }"></div>
 </template>
 
 <script>
@@ -23,9 +17,7 @@ export default defineComponent({
     },
   },
   methods: {
-    moveToTile(x, y) {
-      console.log("moveToTile", x, y, ActorType);
-      // this.$store.dispatch('moveToTile', i)
+    openDoor() {
       this.gameStore.notify({
         actor: ActorType.Character,
         type: CharacterEvents.Move,
