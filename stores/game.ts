@@ -4,6 +4,7 @@ export enum CharacterState {
 }
 
 export enum ActorType {
+  Sound = 'sound',
   Character = 'character',
   Server = 'server'
 }
@@ -32,7 +33,7 @@ export const useGameStore = defineStore('game', {
     money: 0
   }),
   actions: {
-    notify(event: GameEvent) {
+    async notify(event: GameEvent) {
       // handle events and coordinate actions
       if (
         event.actor === ActorType.Character &&
@@ -41,6 +42,8 @@ export const useGameStore = defineStore('game', {
         this.character.x = event.payload.x
         this.character.y = event.payload.y
         this.character.state = CharacterState.Walking
+        // busy wait for 1 second
+        await new Promise((resolve) => setTimeout(resolve, 1000))
       }
       if (
         event.actor === ActorType.Character &&

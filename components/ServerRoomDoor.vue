@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {chain } from '@/helpers';
+import { chain } from "@/helpers";
 import { mapStores } from "pinia";
 import { ActorType, CharacterEvents } from "@/stores/game";
 
@@ -21,21 +21,21 @@ export default defineComponent({
     moveToCampus() {
       console.log("moveToCampus");
       chain([
-      // player move to door
-      this.gameStore.notify({
-        actor: ActorType.Character,
-        type: CharacterEvents.Move,
-        payload: { x: 3, y: 0 },
-      })
-      // play door sound
-      this.gameStore.notify({
-        actor: ActorType.Sound,
-        type: "play",
-        payload: { sound: "door" },
-      });
-      // move to campus
-      this.$router.push("/campus");
-    ])
+        // player move to door
+        this.gameStore.notify({
+          actor: ActorType.Character,
+          type: CharacterEvents.Move,
+          payload: { x: 3, y: 0 },
+        }),
+        // play door sound
+        this.gameStore.notify({
+          actor: ActorType.Sound,
+          type: "play",
+          payload: { sound: "door" },
+        }),
+        // move to campus
+        this.$router.push("/campus"),
+      ]);
     },
   },
 });
