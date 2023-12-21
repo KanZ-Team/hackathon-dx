@@ -1,6 +1,5 @@
 <template>
-  <h1>Hoş geldin bebek! {{ testStore.description }}</h1>
-  <StoreExample />
+  <h1>Another component, same store {{ testStore.description }}</h1>
 </template>
 
 <script>
@@ -8,13 +7,12 @@ import { mapStores } from 'pinia'
 
 // https://vuejs.org/guide/extras/render-function.html
 export default defineComponent({
-  name: 'Index',
+  name: 'StoreExample',
   computed: {
     ...mapStores(useTestStore)
   },
   mounted() {
     console.log('Index page mounted', this)
-    this.testStore.fetch()
   }
 })
 </script>
