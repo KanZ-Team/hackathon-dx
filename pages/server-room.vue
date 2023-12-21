@@ -4,6 +4,7 @@
     <ServerRoomTiles />
     <ServerRoomDoor />
     <Character />
+    <ProgressBars />
   </div>
 </template>
 
