@@ -2,6 +2,7 @@
   <h1>Hoş geldin bebek! {{ testStore.description }}</h1>
   <StoreExample />
   <GameStoreExample />
+  <ProgressBars />
 </template>
 
 <script>
