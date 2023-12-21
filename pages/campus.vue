@@ -1,8 +1,8 @@
 <template>
   <Debug />
-  <div class="server-room">
-    <ServerRoomTiles />
-    <ServerRoomDoor />
+  <div class="campus">
+    <CampusTiles />
+    <ServerRoomDoorOutside />
     <Character />
   </div>
 </template>
@@ -19,7 +19,6 @@ export default defineComponent({
   },
   mounted() {
     console.log("Index page mounted", this);
-    this.gameStore.start();
   },
   components: { Character },
 });

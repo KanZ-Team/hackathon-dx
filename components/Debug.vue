@@ -1,6 +1,14 @@
 <template>
   <div class="debug-component">
-    {{ gameStore.character }}
+    <pre
+      >{{
+        {
+          load: gameStore.load,
+          character: gameStore.character,
+          servers: gameStore.servers,
+        }
+      }}
+    </pre>
   </div>
 </template>
 
@@ -23,6 +31,6 @@ export default defineComponent({
   top: 0;
   right: 0;
   z-index: 100;
-  font-size: 50%;
+  font-size: 30%;
 }
 </style>

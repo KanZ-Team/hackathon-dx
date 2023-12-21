@@ -1,9 +1,12 @@
+import { perlin } from '@/helpers'
+
 export enum CharacterState {
   Idle = 'idle',
   Walking = 'walking'
 }
 
 export enum ActorType {
+  Scene = 'scene',
   Sound = 'sound',
   Character = 'character',
   Server = 'server'
@@ -20,19 +23,57 @@ export interface GameEvent {
   payload: any
 }
 
+export enum ServerStatus {
+  Online = 'online',
+  Offline = 'offline'
+}
+
+const soundManager = {
+  play: (sound: string) => {
+    console.log('playing sound', sound)
+  }
+}
+
+const sceneManager = {
+  changeActiveScene: (name: string) => {
+    console.log('change scene', name)
+  }
+}
+
 export const useGameStore = defineStore('game', {
   state: () => ({
     character: {
       x: 0,
       y: 0,
-      state: CharacterState.Idle
+      state: CharacterState.Idle,
+      mood: 0,
+      money: 0
     },
-    serverLoad: 0,
-    temperature: 25,
-    mood: 0,
-    money: 0
+    servers: [
+      {
+        status: ServerStatus.Offline,
+        temp: 0
+      }
+    ],
+    load: 0
   }),
   actions: {
+    start() {
+      // start the game
+      // run every 1 second with requestAnimationFrame
+      let lastTime = 0
+      const loop = (time: number) => {
+        const delta = time - lastTime
+        lastTime = time
+        this.update(delta)
+        requestAnimationFrame(loop)
+      }
+      requestAnimationFrame(loop)
+    },
+    update(delta: number) {
+      // update the game state
+      this.load = perlin(Date.now() / 1000) * 100
+    },
     async notify(event: GameEvent) {
       // handle events and coordinate actions
       if (
@@ -51,13 +92,12 @@ export const useGameStore = defineStore('game', {
       ) {
         this.character.state = CharacterState.Idle
       }
-    },
-    async fetchInitialState() {
-      // Initialize states
-      this.serverLoad = 0
-      this.temperature = 25
-      this.mood = 0
-      this.money = 0
+      if (event.actor === ActorType.Sound) {
+        ;(soundManager as any)[event.type]?.(event.payload)
+      }
+      if (event.actor === ActorType.Scene) {
+        ;(sceneManager as any)[event.type]?.(event.payload)
+      }
     }
   }
 })

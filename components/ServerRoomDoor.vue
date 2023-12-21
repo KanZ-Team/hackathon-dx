@@ -20,22 +20,22 @@ export default defineComponent({
   methods: {
     moveToCampus() {
       console.log("moveToCampus");
-      chain([
-        // player move to door
-        this.gameStore.notify({
+      this.gameStore
+        .notify({
           actor: ActorType.Character,
           type: CharacterEvents.Move,
           payload: { x: 3, y: 0 },
-        }),
+        })
         // play door sound
-        this.gameStore.notify({
-          actor: ActorType.Sound,
-          type: "play",
-          payload: { sound: "door" },
-        }),
-        // move to campus
-        this.$router.push("/campus"),
-      ]);
+        .then(() =>
+          this.gameStore.notify({
+            actor: ActorType.Sound,
+            type: "play",
+            payload: { sound: "door" },
+          })
+        )
+        // // move to campus
+        .then(() => this.$router.push("/campus"));
     },
   },
 });
