@@ -1,4 +1,4 @@
-import { perlin } from '@/helpers'
+import noise from '@/helpers/perlin.js'
 
 export enum CharacterState {
   Idle = 'idle',
@@ -42,6 +42,7 @@ const sceneManager = {
 
 export const useGameStore = defineStore('game', {
   state: () => ({
+    time: 0,
     character: {
       x: 0,
       y: 0,
@@ -72,7 +73,8 @@ export const useGameStore = defineStore('game', {
     },
     update(delta: number) {
       // update the game state
-      this.load = perlin(Date.now() / 1000) * 100
+      this.load = Math.abs(noise.perlin2(this.time / 100, 0.1))
+      this.time = this.time + 1
     },
     async notify(event: GameEvent) {
       // handle events and coordinate actions
