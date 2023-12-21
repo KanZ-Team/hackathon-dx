@@ -17,3 +17,6 @@ This project is made for HackathonDx
 ## Jüri
 
 5 Kişi, ux, kod vb. konularda puanlama yapacaklar.
+
+## Kullanılan Toollar
+-Freesound.org
