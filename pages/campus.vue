@@ -47,6 +47,9 @@ export default defineComponent({
   width: 9rem;
   position: relative;
   overflow: hidden;
+  opacity: 0;
+  animation: fade-in 1s ease-in-out 0.5s forwards;
+
   .character {
     filter: drop-shadow(0px 0px 1px black) drop-shadow(0px 0px 1px black)
       drop-shadow(0px 0px 1px black) drop-shadow(0px 0px 1px black)

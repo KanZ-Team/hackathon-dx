@@ -1,62 +1,60 @@
 <template>
-  <div class="outsidedoor door" :class="{ debug }" @click="moveToServerRoom"></div>
+  <div class="outside-door" :class="{ debug }" @click="moveToServerRoom"></div>
 </template>
 
 <script>
-import { chain } from "@/helpers";
-import { mapStores } from "pinia";
-import { ActorType, CharacterEvents } from "@/stores/game";
+import { chain } from '@/helpers'
+import { mapStores } from 'pinia'
+import { ActorType, CharacterEvents } from '@/stores/game'
 
 export default defineComponent({
   computed: {
-    ...mapStores(useGameStore),
+    ...mapStores(useGameStore)
   },
   props: {
     debug: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   methods: {
     moveToServerRoom() {
-      console.log("moveToCampus");
+      console.log('moveToCampus')
       this.gameStore
         .notify({
           actor: ActorType.Character,
           type: CharacterEvents.Move,
-          payload: { x: 3, y: 0 },
+          payload: { x: 3, y: 0 }
         })
         // play door sound
         .then(() =>
           this.gameStore.notify({
             actor: ActorType.Sound,
-            type: "play",
-            payload: { sound: "door" },
+            type: 'play',
+            payload: { sound: 'door' }
           })
         )
         // // move to campus
-        .then(() => this.$router.push("/server-room"));
-    },
-  },
-});
+        .then(() => this.$router.push('/server-room'))
+    }
+  }
+})
 </script>
 
 <style lang="scss">
-
-
-.outsidedoor {
+.outside-door {
   cursor: pointer;
-    display: flex;
-    flex-wrap: wrap;
-    width: 0.8rem;
-    height: 1rem;
-    position: absolute;
-    top: 2.35rem;
-    left: 56%;
-    margin-left: -1rem;
-    transform-origin: top center;
-    z-index: 99;
-    border-radius: 0.2rem;
+  display: flex;
+  flex-wrap: wrap;
+  width: 0.8rem;
+  height: 1rem;
+  position: absolute;
+  top: 2.35rem;
+  left: 56%;
+  margin-left: -1rem;
+  transform-origin: top center;
+  z-index: 99;
+  border-radius: 0.2rem;
   &:hover {
     background: rgba(255, 255, 255, 0.3);
   }
