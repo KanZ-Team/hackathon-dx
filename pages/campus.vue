@@ -8,6 +8,12 @@
     <MayaTheDog />
     <LucyTheCat />
     <LokiTheCat />
+    <audio autoplay loop ref="chirping">
+      <source
+        src="/resources/sounds/620380__much_username__budgie_chirp2.mp3"
+        type="audio/mp3"
+      />
+    </audio>
   </div>
 </template>
 
@@ -22,6 +28,8 @@ export default defineComponent({
     ...mapStores(useGameStore)
   },
   mounted() {
+    this.gameStore.changeLocation('campus')
+    this.$refs.chirping.volume = 0.1
     console.log('Index page mounted', this)
   },
   components: { Character }

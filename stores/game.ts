@@ -89,13 +89,27 @@ function addServerHeatUp({ servers, heatGenerated }: any) {
     })
 }
 
+function getAverageTemp({ servers }: any) {
+  const onlineServers = servers.filter(
+    (server: any) => server.status === ServerStatus.Online
+  )
+  const avgTemp =
+    onlineServers.reduce((acc: any, server: any) => {
+      return acc + server.temp
+    }, 0) / onlineServers.length
+  return avgTemp
+}
+
 export const useGameStore = defineStore('game', {
   state: () => ({
+    started: false,
     time: 0,
     heatUpTime: -1,
+    averageTemp: 25,
+    location: 'server-room',
     character: {
-      x: 0,
-      y: 0,
+      x: 3,
+      y: 2,
       state: CharacterState.Idle,
       mood: 0,
       money: 0
@@ -122,6 +136,7 @@ export const useGameStore = defineStore('game', {
   }),
   actions: {
     start() {
+      if (this.started) return
       // start the game
       // run every 1 second with requestAnimationFrame
       let lastTime = 0
@@ -159,6 +174,20 @@ export const useGameStore = defineStore('game', {
         this.heatUpTime = -1
         coolDownServers({ servers })
       }
+
+      const avgTemp = getAverageTemp({ servers: this.servers })
+      this.averageTemp = avgTemp
+
+      // update mood based on location
+      if (this.location === 'server-room') {
+        this.character.mood = Math.min(1, this.character.mood - 0.001)
+      }
+      if (this.location === 'campus') {
+        this.character.mood = Math.max(0, this.character.mood + 0.001)
+      }
+    },
+    changeLocation(location: string) {
+      this.location = location
     },
     async notify(event: GameEvent) {
       // handle events and coordinate actions

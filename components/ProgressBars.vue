@@ -21,7 +21,7 @@
         <div
           id="progress-bar-temperature"
           :style="{
-            width: gameStore?.averageTemp * 100 + '%'
+            width: gameStore?.averageTemp + '%'
           }"
         ></div>
       </div>
@@ -122,7 +122,6 @@ export default defineComponent({
 #progress-bar-temperature {
   height: 100%;
   background-color: #ff000096;
-  transition: width 1s ease-in-out;
   width: 200%; /* Genişliği iki katına çıkar */
 }
 #progress-bar-mood {

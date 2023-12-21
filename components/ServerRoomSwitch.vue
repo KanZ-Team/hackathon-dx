@@ -1,45 +1,41 @@
 <template>
-  <div
-    class="server-room switch"
-    :class="{ debug }"
-    @click="switchTheLights"
-  ></div>
+  <div class="switch" :class="{ debug }" @click="switchTheLights"></div>
 </template>
 
 <script>
-import { mapStores } from "pinia";
-import { ActorType, CharacterEvents } from "@/stores/game";
+import { mapStores } from 'pinia'
+import { ActorType, CharacterEvents } from '@/stores/game'
 
 export default defineComponent({
   computed: {
-    ...mapStores(useGameStore),
+    ...mapStores(useGameStore)
   },
   props: {
     debug: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   methods: {
     switchTheLights() {
-      console.log("switch the lights");
+      console.log('switch the lights')
       this.gameStore
         .notify({
           actor: ActorType.Character,
           type: CharacterEvents.Move,
-          payload: { x: 3, y: 0 },
+          payload: { x: 3, y: 0 }
         })
         // play switch lights sound
         .then(() =>
           this.gameStore.notify({
             actor: ActorType.Sound,
-            type: "play",
-            payload: { sound: "door" },
+            type: 'play',
+            payload: { sound: 'door' }
           })
-        );
-    },
-  },
-});
+        )
+    }
+  }
+})
 </script>
 
 <style lang="scss">
