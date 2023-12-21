@@ -33,7 +33,7 @@ export default defineComponent({
 
       return {
         left: `${diff.x}px`,
-        top: `calc(${diff.y}px - 2rem + 0.4rem)`,
+        top: `calc(${diff.y}px - var(--character-height) + 0.4rem)`,
       };
     },
   },
@@ -42,8 +42,9 @@ export default defineComponent({
 
 <style lang="scss">
 .character {
+  --character-height: 2.8rem;
   width: 1rem;
-  height: 2rem;
+  height: var(--character-height);
   transition: top 0.2s ease-in-out, left 0.2s ease-in-out;
   position: absolute;
   bottom: 0;

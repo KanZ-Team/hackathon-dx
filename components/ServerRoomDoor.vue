@@ -1,8 +1,9 @@
 <template>
-  <div class="door" :class="{ debug }"></div>
+  <div class="door" :class="{ debug }" @click="moveToCampus"></div>
 </template>
 
 <script>
+import {chain } from '@/helpers';
 import { mapStores } from "pinia";
 import { ActorType, CharacterEvents } from "@/stores/game";
 
@@ -17,60 +18,51 @@ export default defineComponent({
     },
   },
   methods: {
-    openDoor() {
+    moveToCampus() {
+      console.log("moveToCampus");
+      chain([
+      // player move to door
       this.gameStore.notify({
         actor: ActorType.Character,
         type: CharacterEvents.Move,
-        payload: { x, y },
+        payload: { x: 3, y: 0 },
+      })
+      // play door sound
+      this.gameStore.notify({
+        actor: ActorType.Sound,
+        type: "play",
+        payload: { sound: "door" },
       });
+      // move to campus
+      this.$router.push("/campus");
+    ])
     },
   },
 });
 </script>
 
 <style lang="scss">
-.tiles {
+.door {
+  cursor: pointer;
   display: flex;
   flex-wrap: wrap;
-  width: 9.4rem;
-  height: 7.6rem;
-  transform: perspective(46vw) rotateX(60deg);
+  width: 1.7rem;
+  height: 2.66rem;
   position: absolute;
-  bottom: 0px;
+  top: 4.05rem;
   left: 50%;
-  margin-left: -4.8rem;
-  transform-origin: bottom center;
+  margin-left: -1rem;
+  transform-origin: top center;
+  z-index: 99; // 99 is overlay click through
+  border-radius: 0.2rem;
 
-  &.debug {
-    .tile {
-      background: rgba(255, 0, 0, 0.6);
-      border: 1px solid black;
-    }
+  &:hover {
+    background: rgba(255, 255, 255, 0.3);
   }
 
-  .tile {
-    width: calc(100% / 8);
-    height: calc(100% / 6);
-    transition: 0.4s background;
-    cursor: pointer;
-    position: relative;
-    &:after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 12px;
-      border-radius: 50%;
-    }
-    &:hover:after {
-      background: rgba(255, 255, 255, 0.2);
-    }
+  &.debug {
+    background: rgba(255, 0, 0, 0.6);
+    border: 1px solid black;
   }
 }
 </style>
