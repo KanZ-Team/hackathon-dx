@@ -40,14 +40,14 @@
         ></div>
       </div>
     </div>
-    <!-- <div class="side">
+    <div class="side">
       <div id="money">
         <img src="@/assets/icons/money.svg" alt="Your Icon" />
       </div>
       <div id="progress-container">
         <div id="progress-bar-money"></div>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -132,7 +132,7 @@ export default defineComponent({
 }
 #progress-bar-money {
   height: 100%;
-  background-color: #031803;
+  background-color: #ede842c2;
   width: 200%; /* Genişliği iki katına çıkar */
 }
 </style>

@@ -6,6 +6,7 @@
     <ServerRoomDoor />
     <ServerRoomServer />
     <Character />
+    <PetPoints />
     <ProgressBars />
     <audio autoplay loop ref="chirping">
       <source

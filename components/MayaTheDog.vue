@@ -1,5 +1,12 @@
 <template>
-  <div @click="petTheDog" class="dog" :class="{ debug }"></div>
+  <div class="dog" :class="{ debug }" @mousedown="moveToDog">
+    <PetPoints @pet="petTheDog">
+      <div class="point starting active last"></div>
+      <div class="point" style="margin-top: 0.2rem"></div>
+      <div class="point" v-for="i in 22"></div>
+      <div class="point ending"></div>
+    </PetPoints>
+  </div>
 </template>
 
 <script>
@@ -17,6 +24,14 @@ export default defineComponent({
     }
   },
   methods: {
+    moveToDog() {
+      console.log('moveToDog')
+      this.gameStore.notify({
+        actor: ActorType.Character,
+        type: CharacterEvents.Move,
+        payload: { x: 3, y: 5 }
+      })
+    },
     petTheDog() {
       console.log('petTheDog')
       this.gameStore
@@ -46,21 +61,27 @@ export default defineComponent({
 
 <style lang="scss">
 .dog {
-  cursor: pointer;
   display: flex;
   flex-wrap: wrap;
   position: absolute;
   z-index: 99;
   border-radius: 0.2rem;
-  width: 4rem;
+  width: 1.2rem;
   height: 3.4rem;
-  right: 1rem;
+  right: 2.6rem;
   top: 5.8rem;
   margin-left: -1rem;
-  transform: rotateY(63deg) rotateX(182deg);
 
   &:hover {
-    background: rgba(255, 255, 255, 0.3);
+    .petPoints .point.starting {
+      &:after {
+        display: block;
+      }
+    }
+  }
+
+  .petPoints {
+    margin-left: 0.3rem;
   }
 
   &.debug {
