@@ -26,13 +26,14 @@ export default defineComponent({
           payload: { x: 3, y: 0 }
         })
         // play switch lights sound
-        .then(() =>
-          this.gameStore.notify({
-            actor: ActorType.Sound,
-            type: 'play',
-            payload: { sound: 'door' }
-          })
-        )
+        .then(() => {
+          // document background to black
+          if (typeof document !== 'undefined') {
+            if (document.body.style.backgroundColor === 'black')
+              document.body.style.backgroundColor = 'white'
+            else document.body.style.backgroundColor = 'black'
+          }
+        })
     }
   }
 })

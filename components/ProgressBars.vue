@@ -45,7 +45,12 @@
         <img src="@/assets/icons/money.svg" alt="Your Icon" />
       </div>
       <div id="progress-container">
-        <div id="progress-bar-money"></div>
+        <div
+          id="progress-bar-money"
+          :style="{
+            width: gameStore?.character.money / 1000 + '%'
+          }"
+        ></div>
       </div>
     </div>
   </div>
@@ -127,7 +132,6 @@ export default defineComponent({
 #progress-bar-mood {
   height: 100%;
   background-color: #3bdbe6ba;
-  transition: width 1s ease-in-out;
   width: 200%; /* Genişliği iki katına çıkar */
 }
 #progress-bar-money {

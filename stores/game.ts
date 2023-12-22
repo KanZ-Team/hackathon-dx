@@ -115,11 +115,11 @@ const petTimeout = 2000
 
 //#region Mood
 function increaseMood({ character }: any) {
-  character.mood = Math.min(1, character.mood + 0.001)
+  character.mood = Math.min(1, character.mood + 0.00005)
 }
 
 function decreaseMood({ character }: any) {
-  character.mood = Math.max(0, character.mood - 0.001)
+  character.mood = Math.max(0, character.mood - 0.0001)
 }
 
 function updateMood({ location, character }: any) {
@@ -145,7 +145,7 @@ export const useGameStore = defineStore('game', {
       y: 2,
       state: CharacterState.Idle,
       mood: 1,
-      money: 0,
+      money: 100000,
       petTimes: {}
     },
     servers: [
@@ -175,6 +175,7 @@ export const useGameStore = defineStore('game', {
   actions: {
     start() {
       if (this.started) return
+      this.started = true
       // start the game
       // run every 1 second with requestAnimationFrame
       let lastTime = 0
@@ -209,7 +210,9 @@ export const useGameStore = defineStore('game', {
 
       if (
         this.servers.every(
-          (server: any) => server.status === ServerStatus.Offline
+          (server: any) =>
+            server.status === ServerStatus.Offline ||
+            server.status === ServerStatus.Burning
         )
       ) {
         // start a server
@@ -223,6 +226,11 @@ export const useGameStore = defineStore('game', {
           return
         }
       }
+
+      const moneySpent = this.servers.filter(
+        (server: any) => server.status === ServerStatus.Online
+      ).length
+      this.character.money = this.character.money - moneySpent
 
       // update the game state
       this.load =
