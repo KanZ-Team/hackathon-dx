@@ -6,9 +6,15 @@
 import { mapStores } from 'pinia'
 
 export default defineComponent({
+  props: {
+    to: {
+      type: String,
+      default: '/server-room'
+    }
+  },
   methods: {
     goServerRoom() {
-      this.$router.push('/server-room')
+      this.$router.push(this.to)
     }
   }
 })
@@ -22,7 +28,7 @@ export default defineComponent({
   left: 0.3rem;
   width: 0.7rem;
   height: 0.7rem;
-  background-image: url('@/assets/icons/arrow.svg');
+  background-image: url('/resources/icons/arrow.svg');
   background-size: 60%;
   background-repeat: no-repeat;
   background-position: center;

@@ -30,7 +30,7 @@ export default defineComponent({
           this.gameStore.notify({
             actor: ActorType.Sound,
             type: 'play',
-            payload: { sound: 'door' }
+            payload: '15419__pagancow__dorm-door-opening.mp3'
           })
         )
         // // move to campus
@@ -52,7 +52,7 @@ export default defineComponent({
   left: 56%;
   margin-left: -1rem;
   transform-origin: top center;
-  z-index: 99;
+  z-index: 41;
   border-radius: 0.2rem;
   &:hover {
     background: rgba(255, 255, 255, 0.3);

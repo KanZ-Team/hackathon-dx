@@ -123,14 +123,16 @@ export default defineComponent({
     width: 1rem;
     height: 0.1rem;
     position: relative;
-
+    &.active {
+      z-index: 49;
+    }
     &.last {
       &:after {
         content: '';
         position: absolute;
         width: 1rem;
         height: 1rem;
-        background-image: url('@/assets/icons/arrow.svg');
+        background-image: url('/resources/icons/arrow.svg');
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;

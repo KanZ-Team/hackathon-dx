@@ -1,11 +1,10 @@
 <template>
-  <Debug />
   <div class="server-room game-area">
     <ServerRoomTiles />
     <ServerRoomSwitch />
     <ServerRoomDoor />
     <ServerRoomServer />
-    <ServerRoomTimer :totalTime=320 />
+    <ServerRoomTimer :totalTime="320" />
     <Character />
     <PetPoints />
     <ProgressBars />
@@ -42,7 +41,7 @@ export default defineComponent({
 })
 </script>
 
-<style>
+<style lang="scss">
 @keyframes fade-in {
   0% {
     opacity: 0;
@@ -64,5 +63,10 @@ export default defineComponent({
   overflow: hidden;
   opacity: 0;
   animation: fade-in 1s ease-in-out 0.5s forwards;
+
+  .tiles {
+    width: 8rem;
+    margin-left: -4rem;
+  }
 }
 </style>

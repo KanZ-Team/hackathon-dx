@@ -1,22 +1,29 @@
 <template>
   <div id="bars">
-    <UModal v-model="isOpenServerLoad"
-    :ui="{ width: 'max-w-px sm:max-w-44', inner: 'text-[32px]' }"
+    <UModal
+      v-model="isOpenServerLoad"
+      :ui="{ width: 'max-w-24 sm:max-w-24', inner: 'text-[32px]' }"
     >
-    <div class="p-4">
+      <div class="p-4">
         <h1>Sunucu Yükü</h1>
-        <Placeholder class="h-48" />
         <p>
-          Mevcut iş yükünü temsil eder. Daha yüksek bir değer, 
-          sunucunun daha fazla işlem yaptığını gösterebilir.
+          Mevcut trafiği temsil eder. Daha yüksek bir değer, sunucunun daha
+          fazla işlem yaptığını gösterir. Sunucu yükü çok yüksekse, sunucular
+          ısınır.
         </p>
-    </div>
+      </div>
     </UModal>
-    <div class="side">
+    <div class="side" @click="isOpenServerLoad = true">
       <div id="server-load">
-        <img src="@/assets/icons/server-load.svg" @click="isOpenServerLoad = true" alt="Your Icon" />
+        <img src="/resources/icons/server-load.svg" />
       </div>
       <div id="progress-container">
+        <div
+          id="progress-bar-server-capacity"
+          :style="{
+            width: gameStore?.capacity * 100 + '%'
+          }"
+        ></div>
         <div
           id="progress-bar-server-load"
           :style="{
@@ -24,23 +31,29 @@
           }"
         ></div>
       </div>
-
     </div>
-    <UModal v-model="isOpenTemperature"
-    :ui="{ width: 'max-w-px sm:max-w-44', inner: 'text-[32px]' }"
+    <UModal
+      v-model="isOpenTemperature"
+      :ui="{ width: 'max-w-24 sm:max-w-24', inner: 'text-[32px]' }"
     >
-    <div class="p-4">
+      <div class="p-4">
         <h1>Sunucu Sıcaklığı</h1>
-        <Placeholder class="h-48" />
         <p>
-          Sunucusunun anlık sıcaklık durumunu gösterir. 
-          Artan sıcaklık, sunucunun aşırı ısındığını ve soğutma önlemlerinin alınması gerektiğini gösterebilir.
+          Sunucusunun anlık sıcaklık durumunu gösterir. Artan sıcaklık,
+          sunucunun aşırı ısındığını ve soğutma önlemlerinin alınması
+          gerektiğini gösterir. Tüm sunucular yanarsa oyun biter.
         </p>
-    </div>
+      </div>
     </UModal>
-    <div class="side">
+    <div class="side" @click="isOpenTemperature = true">
       <div id="temperature">
-        <img src="@/assets/icons/temperature.svg" @click="isOpenTemperature = true" alt="Your Icon" />
+        <img
+          :src="
+            gameStore?.averageTemp > 90
+              ? '/resources/icons/fire.svg'
+              : '/resources/icons/temperature.svg'
+          "
+        />
       </div>
       <div id="progress-container">
         <div
@@ -51,20 +64,18 @@
         ></div>
       </div>
     </div>
-    <UModal v-model="isOpenMood"
-    :ui="{ width: 'max-w-px sm:max-w-44', inner: 'text-[32px]' }"
+    <UModal
+      v-model="isOpenMood"
+      :ui="{ width: 'max-w-24 sm:max-w-24', inner: 'text-[32px]' }"
     >
-    <div class="p-4">
+      <div class="p-4">
         <h1>Mod</h1>
-        <Placeholder class="h-48" />
-        <p>
-          Oyuncunun ruh halini temsil eder.
-        </p>
-    </div>
+        <p>Oyuncunun ruh halini temsil eder. Sıfıra düşerse oyun biter.</p>
+      </div>
     </UModal>
-    <div class="side">
+    <div class="side" @click="isOpenMood = true">
       <div id="mood">
-        <img src="@/assets/icons/mood.svg" @click="isOpenMood = true" alt="Your Icon" />
+        <img src="/resources/icons/mood.svg" />
       </div>
       <div id="progress-container">
         <div
@@ -75,9 +86,9 @@
         ></div>
       </div>
     </div>
-    <div class="side">
+    <div class="side" @click="isOpenMoney = true">
       <div id="money">
-        <img src="@/assets/icons/money.svg" @click="isOpenMoney = true" alt="Your Icon" />
+        <img src="/resources/icons/money.svg" />
       </div>
       <div id="progress-container">
         <div
@@ -88,16 +99,18 @@
         ></div>
       </div>
     </div>
-    <UModal v-model="isOpenMoney"
-    :ui="{ width: 'max-w-px sm:max-w-44', inner: 'text-[32px]' }"
+    <UModal
+      v-model="isOpenMoney"
+      :ui="{ width: 'max-w-24 sm:max-w-24', inner: 'text-[32px]' }"
     >
-    <div class="p-4">
-        <h1>Para</h1>
-        <Placeholder class="h-48" />
+      <div class="p-4">
+        <h1>Yeşil Enerji</h1>
         <p>
-          Oyuncunun sahip olduğu sanal para birimini gösterir. Bu para, oyun içindeki alışverişlerde ve geliştirmelerde kullanılabilir.
+          Şirketin ne kadar yeşil enerji kullandığını gösterir. Daha yüksek bir
+          değer, gelecek için daha iyi bir dünya anlamına gelir. Sıfıra düşerse
+          oyun biter.
         </p>
-    </div>
+      </div>
     </UModal>
   </div>
 </template>
@@ -112,13 +125,13 @@ export default defineComponent({
       isOpenMoney: false,
       isOpenMood: false,
       isOpenTemperature: false,
-      isOpenServerLoad:false,
+      isOpenServerLoad: false
     }
   },
   name: 'ProgressBars',
   computed: {
     ...mapStores(useGameStore)
-  },
+  }
 })
 </script>
 <style scoped>
@@ -137,7 +150,7 @@ export default defineComponent({
   z-index: 1;
   filter: contrast(0) brightness(0) drop-shadow(0 0 0.75rem #000);
   margin-top: -0.04rem;
-  padding-bottom: 0.12rem;
+  padding-bottom: 0.16rem;
 }
 #money {
   width: 0.25rem;
@@ -145,7 +158,7 @@ export default defineComponent({
   position: absolute;
   z-index: 1;
   filter: contrast(0) brightness(0) drop-shadow(0 0 0.75rem #000);
-  padding-bottom: 0.12rem;
+  padding-bottom: 0.16rem;
 }
 #mood {
   width: 0.25rem;
@@ -154,7 +167,7 @@ export default defineComponent({
   z-index: 1;
   filter: contrast(0) brightness(0) drop-shadow(0 0 0.75rem #000);
   margin-top: -0.04rem;
-  padding-bottom: 0.12rem;
+  padding-bottom: 0.16rem;
 }
 #server-load {
   width: 0.25rem;
@@ -163,21 +176,31 @@ export default defineComponent({
   z-index: 1;
   filter: contrast(0) brightness(0) drop-shadow(0 0 0.75rem #000);
   margin-top: -0.04rem;
-  padding-bottom: 0.12rem;
+  padding-bottom: 0.16rem;
 }
 #progress-container {
-  width: 1.9rem;
+  width: 1.87rem;
   height: 0.5rem;
   border-radius: 0.1rem;
   margin-top: 0.4rem;
   margin-left: 0.3rem;
   background-color: #ffffff14;
   overflow: hidden;
-  backdrop-filter: blur(15px);
-  border: 1px solid #ffffff4f;
+  backdrop-filter: blur(1rem);
+  border: 0.001rem solid #ffffff4f;
 }
-
+#progress-bar-server-capacity {
+  position: absolute;
+  height: 100%;
+  border-right: 2px dashed #0b7535;
+  width: 200%; /* Genişliği iki katına çıkar */
+  transition: width 0.7s ease-in-out;
+  z-index: 2;
+  transform: translateX(2px);
+}
 #progress-bar-server-load {
+  top: 0;
+  left: 0;
   height: 100%;
   background-color: #1fde6bb8;
   width: 200%; /* Genişliği iki katına çıkar */

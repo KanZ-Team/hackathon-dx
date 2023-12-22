@@ -15,7 +15,7 @@
 
 html {
   /* magic number to make it fit to the screen */
-  font-size: 6vw;
+  font-size: 5vmax;
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -29,5 +29,17 @@ body {
   width: 16rem;
   height: 9rem;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+h1 + button {
+  margin-top: 0.5rem;
+}
+
+.game-area {
+  border-radius: 0.5rem;
+  border: 0.03rem solid white;
 }
 </style>

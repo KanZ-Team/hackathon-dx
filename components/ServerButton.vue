@@ -27,8 +27,8 @@ export default defineComponent({
   },
   props: {
     index: {
-      type: Boolean,
-      default: false
+      type: Number,
+      default: -1
     }
   },
   methods: {
@@ -60,7 +60,7 @@ export default defineComponent({
     width: 0.7rem;
     height: 0.7rem;
     position: absolute;
-    z-index: 99;
+    z-index: 41;
     top: 0;
     left: 0;
     border-radius: 99rem;

@@ -50,7 +50,7 @@ export default defineComponent({
   display: flex;
   flex-wrap: wrap;
   position: absolute;
-  z-index: 99;
+  z-index: 41;
   border-radius: 0.2rem;
   width: 2.5rem;
   height: 1.9rem;

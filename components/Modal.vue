@@ -4,7 +4,7 @@
 
     <UModal
       v-model="isOpen"
-      :ui="{ width: 'max-w-px sm:max-w-44', inner: 'text-[32px]' }"
+      :ui="{ width: 'max-w-24 sm:max-w-24', inner: 'text-[32px]' }"
     >
       <div class="p-4">
         <h1>Game Store</h1>

@@ -111,7 +111,9 @@ function getAverageTemp({ servers }: any) {
   const maxTemp = onlineServers.reduce((acc: any, server: any) => {
     return Math.max(acc, server.temp || 100)
   }, 0)
-  return Math.max(avgTemp, maxTemp)
+  return servers.some((server: any) => server.status === ServerStatus.Burning)
+    ? 100
+    : Math.max(avgTemp, maxTemp)
 }
 
 const petTimeout = 2000
@@ -138,6 +140,8 @@ function updateMood({ location, character }: any) {
 
 export const useGameStore = defineStore('game', {
   state: () => ({
+    points: 512,
+    capacity: 0,
     gameOver: false,
     started: false,
     time: 0,
@@ -155,11 +159,6 @@ export const useGameStore = defineStore('game', {
     },
     servers: [
       {
-        status: ServerStatus.Burning,
-        temp: 25,
-        tappedTimes: 0
-      },
-      {
         status: ServerStatus.Online,
         temp: 25,
         tappedTimes: 0
@@ -171,6 +170,11 @@ export const useGameStore = defineStore('game', {
       },
       {
         status: ServerStatus.Online,
+        temp: 25,
+        tappedTimes: 0
+      },
+      {
+        status: ServerStatus.Offline,
         temp: 25,
         tappedTimes: 0
       }
@@ -265,6 +269,11 @@ export const useGameStore = defineStore('game', {
       )
       this.time = this.time + 1
 
+      this.capacity =
+        this.servers.filter(
+          (server: any) => server.status === ServerStatus.Online
+        ).length / this.servers.length
+
       const { load, servers } = this
       if (shouldServerHeatUp({ load, servers })) {
         if (this.heatUpTime === -1) {
@@ -311,7 +320,7 @@ export const useGameStore = defineStore('game', {
         this.character.y = event.payload.y
         this.character.state = CharacterState.Walking
         // busy wait for 1 second
-        await new Promise((resolve) => setTimeout(resolve, 1000))
+        await new Promise((resolve) => setTimeout(resolve, 400))
       }
       if (
         event.actor === ActorType.Character &&
@@ -341,6 +350,7 @@ export const useGameStore = defineStore('game', {
         const server = this.servers[event.payload.index]
         if (server.status === ServerStatus.Burning) {
           if (server.tappedTimes >= 10) {
+            server.tappedTimes = 0
             server.status = ServerStatus.Offline
             server.temp = 70
           }

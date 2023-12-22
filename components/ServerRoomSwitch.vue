@@ -51,7 +51,7 @@ export default defineComponent({
   left: 3.35rem;
   margin-left: -1rem;
   transform-origin: top center;
-  z-index: 99; // 99 is overlay click through
+  z-index: 41; // 41 is overlay click through
   border-radius: 0.2rem;
 
   &:hover {

@@ -1,5 +1,4 @@
 <template>
-  <Debug />
   <div class="servers game-area">
     <BackButton />
     <ProgressBars />

@@ -1,5 +1,6 @@
 <template>
   <div class="dog" :class="{ debug }" @mousedown="moveToDog">
+    <div class="logo"></div>
     <PetPoints @pet="petTheDog">
       <div class="point starting active last"></div>
       <div class="point" style="margin-top: 0.2rem"></div>
@@ -64,13 +65,30 @@ export default defineComponent({
   display: flex;
   flex-wrap: wrap;
   position: absolute;
-  z-index: 99;
+  z-index: 41;
   border-radius: 0.2rem;
   width: 1.2rem;
   height: 3.4rem;
   right: 2.6rem;
   top: 5.8rem;
   margin-left: -1rem;
+
+  .logo {
+    width: 0.2rem;
+    height: 0.2rem;
+    background-image: url(/_nuxt/resources/logo/dxcc.png);
+    background-size: 490%;
+    background-position: center left;
+    background-repeat: no-repeat;
+    margin-bottom: 0.2rem;
+    position: absolute;
+    top: 1.1rem;
+    left: 0.775rem;
+    border: 2px solid #141915;
+    border-radius: 0.05rem;
+    background-color: #8854d1;
+    transform: skew(0deg, -3deg);
+  }
 
   &:hover {
     .petPoints .point.starting {

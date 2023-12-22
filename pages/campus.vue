@@ -1,5 +1,4 @@
 <template>
-  <Debug />
   <div class="campus game-area">
     <ProgressBars />
     <ServerRoomTiles />

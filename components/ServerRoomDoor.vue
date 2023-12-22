@@ -3,42 +3,42 @@
 </template>
 
 <script>
-import { chain } from "@/helpers";
-import { mapStores } from "pinia";
-import { ActorType, CharacterEvents } from "@/stores/game";
+import { chain } from '@/helpers'
+import { mapStores } from 'pinia'
+import { ActorType, CharacterEvents } from '@/stores/game'
 
 export default defineComponent({
   computed: {
-    ...mapStores(useGameStore),
+    ...mapStores(useGameStore)
   },
   props: {
     debug: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   methods: {
     moveToCampus() {
-      console.log("moveToCampus");
+      console.log('moveToCampus')
       this.gameStore
         .notify({
           actor: ActorType.Character,
           type: CharacterEvents.Move,
-          payload: { x: 3, y: 0 },
+          payload: { x: 3, y: 0 }
         })
         // play door sound
         .then(() =>
           this.gameStore.notify({
             actor: ActorType.Sound,
-            type: "play",
-            payload: { sound: "door" },
+            type: 'play',
+            payload: '15419__pagancow__dorm-door-opening.mp3'
           })
         )
         // // move to campus
-        .then(() => this.$router.push("/campus"));
-    },
-  },
-});
+        .then(() => this.$router.push('/campus'))
+    }
+  }
+})
 </script>
 
 <style lang="scss">
@@ -53,7 +53,7 @@ export default defineComponent({
   left: 50%;
   margin-left: -1rem;
   transform-origin: top center;
-  z-index: 99; // 99 is overlay click through
+  z-index: 41; // 41 is overlay click through
   border-radius: 0.2rem;
 
   &:hover {
