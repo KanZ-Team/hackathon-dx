@@ -46,17 +46,17 @@ export default defineComponent({
       console.log('stopping')
       this.isMouseDown = false
       // remove all active
-      document.querySelectorAll('.point').forEach((node) => {
+      document?.querySelectorAll('.point').forEach((node) => {
         node.classList.remove('active')
       })
       // remove all last
-      document.querySelectorAll('.last').forEach((node) => {
-        node.classList.remove('last')
+      document?.querySelectorAll('.last').forEach((node) => {
+        node?.classList.remove('last')
       })
       // add last to starting
-      document.querySelector('.starting').classList.add('last')
+      document.querySelector('.starting')?.classList.add('last')
       this.angleDegrees = 90
-      document.querySelector('.point.starting').classList.add('active')
+      document.querySelector('.point.starting')?.classList.add('active')
     },
     move(event) {
       if (!this.isMouseDown) return

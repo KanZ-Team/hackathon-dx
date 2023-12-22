@@ -106,9 +106,12 @@ function getAverageTemp({ servers }: any) {
   )
   const avgTemp =
     onlineServers.reduce((acc: any, server: any) => {
-      return acc + server.temp
+      return acc + (server.temp || 100)
     }, 0) / onlineServers.length
-  return avgTemp
+  const maxTemp = onlineServers.reduce((acc: any, server: any) => {
+    return Math.max(acc, server.temp || 100)
+  }, 0)
+  return Math.max(avgTemp, maxTemp)
 }
 
 const petTimeout = 2000
@@ -194,7 +197,12 @@ export const useGameStore = defineStore('game', {
     },
     update(delta: number) {
       // check game over
-      if (this.character.mood === 0) {
+      if (this.character.mood <= 0) {
+        console.log('game over')
+        return
+      }
+
+      if (this.character.money <= 0) {
         console.log('game over')
         return
       }
@@ -233,9 +241,11 @@ export const useGameStore = defineStore('game', {
       this.character.money = this.character.money - moneySpent
 
       // update the game state
-      this.load =
+      this.load = Math.min(
+        1,
         Math.abs(noise.perlin2(Math.floor(this.time / 100) / 10, 0.1) * 1.6) +
-        0.1
+          this.time / 50_000
+      )
       this.time = this.time + 1
 
       const { load, servers } = this
@@ -315,6 +325,7 @@ export const useGameStore = defineStore('game', {
         if (server.status === ServerStatus.Burning) {
           if (server.tappedTimes >= 10) {
             server.status = ServerStatus.Offline
+            server.temp = 70
           }
           server.tappedTimes = server.tappedTimes + 1
         }

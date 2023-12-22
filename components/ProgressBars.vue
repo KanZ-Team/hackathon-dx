@@ -74,6 +74,7 @@ export default defineComponent({
 
 .side {
   display: flex;
+  align-items: flex-end;
 }
 #temperature {
   width: 0.25rem;
@@ -82,6 +83,7 @@ export default defineComponent({
   z-index: 1;
   filter: contrast(0) brightness(0) drop-shadow(0 0 0.75rem #000);
   margin-top: -0.04rem;
+  padding-bottom: 0.12rem;
 }
 #money {
   width: 0.25rem;
@@ -89,6 +91,7 @@ export default defineComponent({
   position: absolute;
   z-index: 1;
   filter: contrast(0) brightness(0) drop-shadow(0 0 0.75rem #000);
+  padding-bottom: 0.12rem;
 }
 #mood {
   width: 0.25rem;
@@ -97,6 +100,7 @@ export default defineComponent({
   z-index: 1;
   filter: contrast(0) brightness(0) drop-shadow(0 0 0.75rem #000);
   margin-top: -0.04rem;
+  padding-bottom: 0.12rem;
 }
 #server-load {
   width: 0.25rem;
@@ -105,6 +109,7 @@ export default defineComponent({
   z-index: 1;
   filter: contrast(0) brightness(0) drop-shadow(0 0 0.75rem #000);
   margin-top: -0.04rem;
+  padding-bottom: 0.12rem;
 }
 #progress-container {
   width: 1.9rem;
