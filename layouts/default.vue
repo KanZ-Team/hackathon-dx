@@ -3,6 +3,7 @@
     <UModal
       v-model="gameStore.gameOver"
       :ui="{ width: 'max-w-24 sm:max-w-24', inner: 'text-[32px]' }"
+      prevent-close
     >
       <div class="p-4">
         <h1>
@@ -30,6 +31,7 @@
     <BackButton
       style="top: 1rem; left: 1rem; background-color: #ffffff29"
       to="/"
+      reload
     />
   </div>
 </template>

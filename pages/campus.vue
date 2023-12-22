@@ -27,12 +27,14 @@ export default defineComponent({
     ...mapStores(useGameStore)
   },
   mounted() {
+    this.$refs.chirping.volume = 0.1
+  },
+  mounted() {
     this.gameStore.notify({
       actor: ActorType.Character,
       type: CharacterEvents.Move,
       payload: { x: 2, y: 0 }
     })
-    this.$refs.chirping.volume = 0.1
     this.gameStore.changeLocation('campus')
     this.gameStore.start()
   },

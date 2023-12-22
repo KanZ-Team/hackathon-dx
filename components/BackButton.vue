@@ -10,11 +10,19 @@ export default defineComponent({
     to: {
       type: String,
       default: '/server-room'
+    },
+    reload: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
     goServerRoom() {
-      this.$router.push(this.to)
+      if (this.reload) {
+        window.location.href = this.to
+      } else {
+        this.$router.push(this.to)
+      }
     }
   }
 })

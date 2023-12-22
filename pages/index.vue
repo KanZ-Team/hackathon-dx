@@ -1,8 +1,18 @@
 <template>
   <div class="home">
+    <audio autoplay loop ref="chirping">
+      <source
+        src="/resources/sounds/112339__alyceobvious__6_27_07-cricket-1.mp3"
+        type="audio/mp3"
+      />
+    </audio>
+
+    <img src="/resources/logo/bug-room.png" />
     <a href="/server-room"> Oyuna Başla </a>
     <a @click="isHowToPlayActive = true"> Nasıl Oynanır? </a>
     <a @click="isAboutActive = true"> Jenerik </a>
+    <br />
+    <img height="10" src="/resources/logo/kan-z.png" />
 
     <UModal
       v-model="isHowToPlayActive"
@@ -98,6 +108,9 @@ export default defineComponent({
       isHowToPlayActive: false,
       isAboutActive: false
     }
+  },
+  mounted() {
+    this.$refs.chirping.volume = 0.1
   },
   computed: {
     ...mapStores(useGameStore)
