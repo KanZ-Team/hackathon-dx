@@ -1,8 +1,20 @@
 <template>
   <div id="bars">
+    <UModal v-model="isOpenServerLoad"
+    :ui="{ width: 'max-w-px sm:max-w-44', inner: 'text-[32px]' }"
+    >
+    <div class="p-4">
+        <h1>Sunucu Yükü</h1>
+        <Placeholder class="h-48" />
+        <p>
+          Mevcut iş yükünü temsil eder. Daha yüksek bir değer, 
+          sunucunun daha fazla işlem yaptığını gösterebilir.
+        </p>
+    </div>
+    </UModal>
     <div class="side">
       <div id="server-load">
-        <img src="@/assets/icons/server-load.svg" alt="Your Icon" />
+        <img src="@/assets/icons/server-load.svg" @click="isOpenServerLoad = true" alt="Your Icon" />
       </div>
       <div id="progress-container">
         <div
@@ -12,10 +24,23 @@
           }"
         ></div>
       </div>
+
     </div>
+    <UModal v-model="isOpenTemperature"
+    :ui="{ width: 'max-w-px sm:max-w-44', inner: 'text-[32px]' }"
+    >
+    <div class="p-4">
+        <h1>Sunucu Sıcaklığı</h1>
+        <Placeholder class="h-48" />
+        <p>
+          Sunucusunun anlık sıcaklık durumunu gösterir. 
+          Artan sıcaklık, sunucunun aşırı ısındığını ve soğutma önlemlerinin alınması gerektiğini gösterebilir.
+        </p>
+    </div>
+    </UModal>
     <div class="side">
       <div id="temperature">
-        <img src="@/assets/icons/temperature.svg" alt="Your Icon" />
+        <img src="@/assets/icons/temperature.svg" @click="isOpenTemperature = true" alt="Your Icon" />
       </div>
       <div id="progress-container">
         <div
@@ -26,10 +51,20 @@
         ></div>
       </div>
     </div>
-
+    <UModal v-model="isOpenMood"
+    :ui="{ width: 'max-w-px sm:max-w-44', inner: 'text-[32px]' }"
+    >
+    <div class="p-4">
+        <h1>Mod</h1>
+        <Placeholder class="h-48" />
+        <p>
+          Oyuncunun ruh halini temsil eder.
+        </p>
+    </div>
+    </UModal>
     <div class="side">
       <div id="mood">
-        <img src="@/assets/icons/mood.svg" alt="Your Icon" />
+        <img src="@/assets/icons/mood.svg" @click="isOpenMood = true" alt="Your Icon" />
       </div>
       <div id="progress-container">
         <div
@@ -42,7 +77,7 @@
     </div>
     <div class="side">
       <div id="money">
-        <img src="@/assets/icons/money.svg" alt="Your Icon" />
+        <img src="@/assets/icons/money.svg" @click="isOpenMoney = true" alt="Your Icon" />
       </div>
       <div id="progress-container">
         <div
@@ -53,6 +88,17 @@
         ></div>
       </div>
     </div>
+    <UModal v-model="isOpenMoney"
+    :ui="{ width: 'max-w-px sm:max-w-44', inner: 'text-[32px]' }"
+    >
+    <div class="p-4">
+        <h1>Para</h1>
+        <Placeholder class="h-48" />
+        <p>
+          Oyuncunun sahip olduğu sanal para birimini gösterir. Bu para, oyun içindeki alışverişlerde ve geliştirmelerde kullanılabilir.
+        </p>
+    </div>
+    </UModal>
   </div>
 </template>
 
@@ -61,10 +107,18 @@ import { mapStores } from 'pinia'
 
 // https://vuejs.org/guide/extras/render-function.html
 export default defineComponent({
+  data() {
+    return {
+      isOpenMoney: false,
+      isOpenMood: false,
+      isOpenTemperature: false,
+      isOpenServerLoad:false,
+    }
+  },
   name: 'ProgressBars',
   computed: {
     ...mapStores(useGameStore)
-  }
+  },
 })
 </script>
 <style scoped>
