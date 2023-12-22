@@ -138,6 +138,7 @@ function updateMood({ location, character }: any) {
 
 export const useGameStore = defineStore('game', {
   state: () => ({
+    gameOver: false,
     started: false,
     time: 0,
     heatUpTime: -1,
@@ -153,7 +154,7 @@ export const useGameStore = defineStore('game', {
     },
     servers: [
       {
-        status: ServerStatus.Online,
+        status: ServerStatus.Burning,
         temp: 25,
         tappedTimes: 0
       },
@@ -196,14 +197,15 @@ export const useGameStore = defineStore('game', {
       requestAnimationFrame(loop)
     },
     update(delta: number) {
+      if (this.gameOver) return
       // check game over
       if (this.character.mood <= 0) {
-        console.log('game over')
+        this.gameOver = true
         return
       }
 
       if (this.character.money <= 0) {
-        console.log('game over')
+        this.gameOver = true
         return
       }
 
@@ -212,7 +214,7 @@ export const useGameStore = defineStore('game', {
           (server: any) => server.status === ServerStatus.Burning
         )
       ) {
-        console.log('game over')
+        this.gameOver = true
         return
       }
 
@@ -230,7 +232,7 @@ export const useGameStore = defineStore('game', {
         if (nextOffline) {
           nextOffline.status = ServerStatus.Online
         } else {
-          console.log('game over')
+          this.gameOver = true
           return
         }
       }

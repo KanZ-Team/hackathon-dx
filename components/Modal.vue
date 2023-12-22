@@ -2,9 +2,16 @@
   <div>
     <UButton label="Open" @click="isOpen = true" />
 
-    <UModal v-model="isOpen">
+    <UModal
+      v-model="isOpen"
+      :ui="{ width: 'max-w-px sm:max-w-44', inner: 'text-[32px]' }"
+    >
       <div class="p-4">
+        <h1>Game Store</h1>
         <Placeholder class="h-48" />
+        <p>
+          Game Store is a modal component that can be used to display a modal.
+        </p>
       </div>
     </UModal>
   </div>
