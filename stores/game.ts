@@ -115,11 +115,11 @@ const petTimeout = 2000
 
 //#region Mood
 function increaseMood({ character }: any) {
-  character.mood = Math.min(1, character.mood - 0.001)
+  character.mood = Math.min(1, character.mood + 0.001)
 }
 
 function decreaseMood({ character }: any) {
-  character.mood = Math.max(0, character.mood + 0.001)
+  character.mood = Math.max(0, character.mood - 0.001)
 }
 
 function updateMood({ location, character }: any) {
