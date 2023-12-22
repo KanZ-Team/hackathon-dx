@@ -76,7 +76,7 @@ export default defineComponent({
   .logo {
     width: 0.2rem;
     height: 0.2rem;
-    background-image: url(/_nuxt/resources/logo/dxcc.png);
+    background-image: url('/resources/logo/dxcc.png');
     background-size: 490%;
     background-position: center left;
     background-repeat: no-repeat;
