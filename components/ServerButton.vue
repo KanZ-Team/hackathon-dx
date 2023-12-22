@@ -37,6 +37,11 @@ export default defineComponent({
     },
     onTap() {
       this.gameStore.notify({
+        actor: ActorType.Sound,
+        type: 'play',
+        payload: 'umutcan_uf.mp3'
+      })
+      this.gameStore.notify({
         actor: ActorType.Server,
         type: ServerEvents.Extinguish,
         payload: { index: this.index }
