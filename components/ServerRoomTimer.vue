@@ -1,12 +1,14 @@
 <template>
   <div class="parent" :class="{ debug }">
     <div class="timer">
-        {{ timeString }}
+        {{ updateCountdownTimer }}
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { useGameStore } from '@/stores/game';
+import { mapStores } from 'pinia';
 export default defineComponent({
   props: {
     debug: {
@@ -20,32 +22,30 @@ export default defineComponent({
   },
   data() {
     return {
-      time: 0,
       timeString: "",
       interval: null,
     };
   },
   methods: {
-    startCountdown() {
-      this.time = this.totalTime;
-      this.interval = setInterval(() => {
-        let minutes = parseInt(this.time / 60, 10);
-        let seconds = parseInt(this.time % 60, 10);
 
+  },
+  mounted() {
+  },
+  computed: {
+    ...mapStores(useGameStore),
+    updateCountdownTimer(): string {
+      console.log(this.gameStore.countDownTimer)
+      let minutes = parseInt(this.gameStore.countDownTimer / 60, 10);
+        let seconds = parseInt(this.gameStore.countDownTimer % 60, 10);
         minutes = minutes < 10 ? "0" + minutes : minutes;
         seconds = seconds < 10 ? "0" + seconds : seconds;
 
         this.timeString = `${minutes}:${seconds}`;
-
-        if (--this.time < 0) {
-          clearInterval(this.interval);
+        if (this.gameStore.countDownTimer < 0) {
           this.timeString = "Time's up!";
         }
-      }, 1000);
-    },
-  },
-  mounted() {
-    this.startCountdown();
+        return this.timeString
+    }
   },
 });
 </script>

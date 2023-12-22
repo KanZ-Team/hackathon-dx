@@ -141,6 +141,7 @@ export const useGameStore = defineStore('game', {
     gameOver: false,
     started: false,
     time: 0,
+    countDownTimer: 320,
     heatUpTime: -1,
     averageTemp: 25,
     location: 'server-room',
@@ -195,6 +196,20 @@ export const useGameStore = defineStore('game', {
         requestAnimationFrame(loop)
       }
       requestAnimationFrame(loop)
+      // Start timer countdown
+      var interval = setInterval(() => {
+        
+        this.updateTimer(this.countDownTimer - 1);
+
+        if(this.countDownTimer === 0){
+          clearInterval(interval);
+          this.gameOver = true;
+        }
+      }, 1000);
+    },
+    updateTimer(updatedTime: number){
+      this.countDownTimer = updatedTime
+      return this.countDownTimer;
     },
     update(delta: number) {
       if (this.gameOver) return
