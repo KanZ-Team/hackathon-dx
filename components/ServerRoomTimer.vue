@@ -1,11 +1,7 @@
 <template>
   <div class="parent" :class="{ debug }">
     <div class="timer">
-      <<<<<<< Updated upstream
       {{ updateCountdownTimer }}
-      =======
-      {{ timeString }}
-      >>>>>>> Stashed changes
     </div>
   </div>
 </template>

@@ -1,17 +1,43 @@
 <template>
   <div class="home">
-    <NuxtLink to="/server-room"> Oyuna Başla </NuxtLink>
+    <a href="/server-room"> Oyuna Başla </a>
     <a @click="isHowToPlayActive = true"> Nasıl Oynanır? </a>
     <a @click="isAboutActive = true"> Jenerik </a>
 
     <UModal
       v-model="isHowToPlayActive"
-      :ui="{ width: 'max-w-24 sm:max-w-24', inner: 'text-[48px]' }"
+      :ui="{ width: 'max-w-32 sm:max-w-32', inner: 'text-[48px]' }"
     >
       <div class="p-4">
         <h1>Nasıl Oynanır?</h1>
         <Placeholder class="h-48" />
-        <p style="font-size: 32px">Oyunda zart zurt.</p>
+        <p style="font-size: 32px">
+          Oyunun amacı, keyfinizi kaçırmadan şirketinizi ayakta tutmaktır. Bunun
+          için, sunucuları gerektiğinde kapatarak, maksimum verimle
+          çalıştırmalısınız. Ancak sunuculara gelen ekstra yük, sunucuları
+          ısıtır ve eğer kontrol edemezseniz, sunucular yanabilir. Sunucuların
+          tamamını kaybederseniz, oyunu kaybedersiniz.
+        </p>
+        <br />
+        <p style="font-size: 32px">
+          Oyunda sunuculara verilen önem kadar kendinize ve etrafınızdaki
+          canlılara da önem vermelisiniz. Sunucuların yanında çalışırken,
+          kendinizi yormamalı ve dinlenmeye zaman ayırmalısınız. Eğer bunları
+          yapmazsanız, canınız sıkılır ve oyunu kaybedersiniz.
+        </p>
+        <br />
+        <p style="font-size: 32px">
+          Tüm sunucuları sürekli çalıştırmak, karbon ayak izinizi arttırır. Bu
+          da sürdürülebilirlik açısından iyi değildir. Bu yüzden, sunucuları
+          gerektiğinde kapatarak, karbon ayak izinizi düşürmelisiniz.
+          Sürdürülebilir bir şirket kurmazsanız, şirketinizin geleceği tehlikeye
+          girer ve oyunu kaybedersiniz.
+        </p>
+        <br />
+        <p style="font-size: 32px">
+          Oyunda üstte bulunan göstergelere tıklayarak ne anlama geldiklerini
+          görebilirsiniz.
+        </p>
       </div>
     </UModal>
 

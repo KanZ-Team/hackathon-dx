@@ -140,7 +140,7 @@ function updateMood({ location, character }: any) {
 
 export const useGameStore = defineStore('game', {
   state: () => ({
-    points: 512,
+    points: 0,
     capacity: 0,
     gameOver: false,
     started: false,
@@ -202,21 +202,23 @@ export const useGameStore = defineStore('game', {
       requestAnimationFrame(loop)
       // Start timer countdown
       var interval = setInterval(() => {
-        
-        this.updateTimer(this.countDownTimer - 1);
+        this.updateTimer(this.countDownTimer - 1)
 
-        if(this.countDownTimer === 0){
-          clearInterval(interval);
-          this.gameOver = true;
+        if (this.countDownTimer === 0) {
+          clearInterval(interval)
+          this.gameOver = true
         }
-      }, 1000);
+      }, 1000)
     },
-    updateTimer(updatedTime: number){
+    updateTimer(updatedTime: number) {
       this.countDownTimer = updatedTime
-      return this.countDownTimer;
+      return this.countDownTimer
     },
     update(delta: number) {
+      // update points
       if (this.gameOver) return
+
+      this.points = (320 - this.countDownTimer) * 5
       // check game over
       if (this.character.mood <= 0) {
         this.gameOver = true

@@ -26,3 +26,7 @@ This project is made for HackathonDx
 
 - JavaScript (Nuxt.js)
 -
+
+## Bilinen Hatalar
+
+- Ana ekrana çıkıp tekrar girildiğinde oyun devam ediyor.
