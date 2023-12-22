@@ -5,10 +5,10 @@
     <ServerRoomSwitch />
     <ServerRoomDoor />
     <ServerRoomServer />
+    <ServerRoomTimer :totalTime=320 />
     <Character />
     <PetPoints />
     <ProgressBars />
-    <Points />
     <audio autoplay loop ref="chirping">
       <source
         src="/resources/sounds/637377__kyles__computer-workstation-fans-server-room.mp3"
