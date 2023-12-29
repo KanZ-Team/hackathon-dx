@@ -1,83 +1,87 @@
-import noise from '@/helpers/perlin.js'
+import noise from "@/helpers/perlin.js";
 
 export enum CharacterState {
-  Idle = 'idle',
-  Walking = 'walking'
+  Idle = "idle",
+  Walking = "walking",
 }
 
 export enum ActorType {
-  Scene = 'scene',
-  Sound = 'sound',
-  Character = 'character',
-  Server = 'server'
+  Scene = "scene",
+  Sound = "sound",
+  Character = "character",
+  Server = "server",
 }
 
 export enum CharacterEvents {
-  Move = 'move',
-  Stop = 'stop',
-  Pet = 'pet'
+  Move = "move",
+  Stop = "stop",
+  Pet = "pet",
 }
 
 export enum ServerEvents {
-  Extinguish = 'extinguish'
+  Extinguish = "extinguish",
 }
 
 export enum SceneEvents {
-  ChangeActiveSeen = 'changeActiveScene'
+  ChangeActiveSeen = "changeActiveScene",
 }
 
 export interface GameEvent {
-  actor: ActorType
-  type: CharacterEvents | string
-  payload: any
+  actor: ActorType;
+  type: CharacterEvents | string;
+  payload: any;
 }
 
 export enum ServerStatus {
-  Damaged = 'damaged',
-  Burning = 'burning',
-  Online = 'online',
-  Offline = 'offline'
+  Damaged = "damaged",
+  Burning = "burning",
+  Online = "online",
+  Offline = "offline",
 }
 
 const soundManager = {
   play: (sound: string) => {
-    console.log('playing sound', sound)
+    console.log("playing sound", sound);
     // play walk sound
     // add audio element to the dom
-    if (typeof window === 'undefined') return
-    const audio = document.createElement('audio')
-    audio.volume = 1
-    audio.src = '/resources/sounds/' + sound
-    audio.play()
-  }
-}
+    if (typeof window === "undefined") return;
+    const audio = document.createElement("audio");
+    audio.volume = 1;
+    audio.src = "/resources/sounds/" + sound;
+    audio.play();
+  },
+};
 
 const sceneManager = {
   changeActiveScene: (name: string) => {
-    console.log('change scene', name)
-  }
-}
+    console.log("change scene", name);
+  },
+};
+
+const MAX_HEAT = 100;
+const INITIAL_HEAT = 25;
+const INITIAL_TIME = 10;
 
 function shouldServerHeatUp({ load, servers }: any) {
-  const maxServerLoad = 110
+  const maxServerLoad = 110;
   let percentageOfServersOnline =
     servers.filter((server: any) =>
       [ServerStatus.Online].includes(server.status)
-    ).length / servers.length
-  return load / percentageOfServersOnline > maxServerLoad / 100
+    ).length / servers.length;
+  return load / percentageOfServersOnline > maxServerLoad / 100;
 }
 
 function coolDownServers({ servers, howMuchCoolDown }: any) {
-  // cool down to 25 degrees
+  // cool down to INITIAL_HEAT degrees
   // cooling speed should be square root of current temp
   servers
-    .filter((server: any) => server.temp > 25)
+    .filter((server: any) => server.temp > INITIAL_HEAT)
     .forEach((server: any) => {
-      server.temp -= 0.05
-      if (server.temp < 25) {
-        server.temp = 25
+      server.temp -= 0.05;
+      if (server.temp < INITIAL_HEAT) {
+        server.temp = INITIAL_HEAT;
       }
-    })
+    });
 }
 
 function addServerHeatUp({ servers, heatGenerated }: any) {
@@ -88,146 +92,164 @@ function addServerHeatUp({ servers, heatGenerated }: any) {
         ![ServerStatus.Damaged, ServerStatus.Offline].includes(server.status)
     )
     .forEach((server: any) => {
-      if (!server.temp) return
+      if (!server.temp) return;
       // added temp should be excessive to the load
       // the more servers are online the less temp should be added
       // the more load is the more temp should be added
-      server.temp += heatGenerated
-      if (server.temp > 100) {
-        server.status = ServerStatus.Burning
-        server.temp = null
+      server.temp += heatGenerated;
+      if (server.temp > MAX_HEAT) {
+        server.status = ServerStatus.Burning;
+        server.temp = null;
       }
-    })
+    });
 }
 
 function getAverageTemp({ servers }: any) {
   const onlineServers = servers.filter(
     (server: any) => server.status === ServerStatus.Online
-  )
+  );
   const avgTemp =
     onlineServers.reduce((acc: any, server: any) => {
-      return acc + (server.temp || 100)
-    }, 0) / onlineServers.length
+      return acc + (server.temp || MAX_HEAT);
+    }, 0) / onlineServers.length;
   const maxTemp = onlineServers.reduce((acc: any, server: any) => {
-    return Math.max(acc, server.temp || 100)
-  }, 0)
+    return Math.max(acc, server.temp || MAX_HEAT);
+  }, 0);
   return servers.some((server: any) => server.status === ServerStatus.Burning)
-    ? 100
-    : Math.max(avgTemp, maxTemp)
+    ? MAX_HEAT
+    : Math.max(avgTemp, maxTemp);
 }
 
-const petTimeout = 2000
+const petTimeout = 2000;
 
 //#region Mood
 function increaseMood({ character }: any) {
-  character.mood = Math.min(1, character.mood + 0.00005)
+  character.mood = Math.min(1, character.mood + 0.00005);
 }
 
 function decreaseMood({ character }: any) {
-  character.mood = Math.max(0, character.mood - 0.0001)
+  character.mood = Math.max(0, character.mood - 0.0001);
 }
 
 function updateMood({ location, character }: any) {
-  if (location === 'server-room') {
-    decreaseMood({ character })
+  if (location === "server-room") {
+    decreaseMood({ character });
   }
 
-  if (location === 'campus') {
-    increaseMood({ character })
+  if (location === "campus") {
+    increaseMood({ character });
   }
 }
 //#endregion Mood
 
-export const useGameStore = defineStore('game', {
+export const useGameStore = defineStore("game", {
   state: () => ({
     points: 0,
     capacity: 0,
     gameOver: false,
     started: false,
     time: 0,
-    countDownTimer: 320,
+    countDownTimer: INITIAL_TIME,
     heatUpTime: -1,
-    averageTemp: 25,
-    location: 'server-room',
+    averageTemp: INITIAL_HEAT,
+    location: "server-room",
     character: {
       x: 3,
       y: 2,
       state: CharacterState.Idle,
       mood: 1,
-      money: 100000,
-      petTimes: {}
+      money: 10000,
+      petTimes: {},
     },
     servers: [
       {
         status: ServerStatus.Online,
-        temp: 25,
-        tappedTimes: 0
+        temp: INITIAL_HEAT,
+        tappedTimes: 0,
       },
       {
         status: ServerStatus.Online,
-        temp: 25,
-        tappedTimes: 0
+        temp: INITIAL_HEAT,
+        tappedTimes: 0,
       },
       {
         status: ServerStatus.Online,
-        temp: 25,
-        tappedTimes: 0
+        temp: INITIAL_HEAT,
+        tappedTimes: 0,
       },
       {
         status: ServerStatus.Offline,
-        temp: 25,
-        tappedTimes: 0
-      }
+        temp: INITIAL_HEAT,
+        tappedTimes: 0,
+      },
     ],
-    load: 0
+    load: 0,
   }),
   actions: {
     start() {
-      if (this.started) return
-      this.started = true
+      if (this.started) return;
+      this.started = true;
       // start the game
       // run every 1 second with requestAnimationFrame
-      let lastTime = 0
-      let globalTime = 0
-      const updateInterval = 1
+      let lastTime = 0;
+      let globalTime = 0;
+      const updateInterval = 1;
       const loop = (time: number) => {
         if (globalTime % updateInterval === 0) {
-          const delta = time - lastTime
-          lastTime = time
-          this.update(delta)
+          const delta = time - lastTime;
+          lastTime = time;
+          this.update(delta);
         }
-        globalTime++
-        requestAnimationFrame(loop)
-      }
-      requestAnimationFrame(loop)
+        globalTime++;
+        requestAnimationFrame(loop);
+      };
+      requestAnimationFrame(loop);
       // Start timer countdown
       var interval = setInterval(() => {
-        this.updateTimer(this.countDownTimer - 1)
+        this.updateTimer(this.countDownTimer - 1);
 
         if (this.countDownTimer === 0) {
-          clearInterval(interval)
-          this.gameOver = true
+          clearInterval(interval);
+          this.gameOver = true;
         }
-      }, 1000)
+      }, 1000);
     },
     updateTimer(updatedTime: number) {
-      this.countDownTimer = updatedTime
-      return this.countDownTimer
+      this.countDownTimer = updatedTime;
+      return this.countDownTimer;
     },
     update(delta: number) {
       // update points
-      if (this.gameOver) return
 
-      this.points = (320 - this.countDownTimer) * 5
+      if (this.gameOver) {
+        this.points = this.calculatePoints(
+          this.gameOver,
+          this.averageTemp,
+          this.character.mood,        
+          this.character.money,
+          this.time,
+          this.countDownTimer
+        );
+        return;
+      }
+
+      this.points = this.calculatePoints(
+        this.gameOver,
+        this.averageTemp,
+        this.character.mood,
+        this.character.money,
+        this.time,
+        this.countDownTimer
+      );
       // check game over
       if (this.character.mood <= 0) {
-        this.gameOver = true
-        return
+        this.gameOver = true;
+        return;
       }
 
       if (this.character.money <= 0) {
-        this.gameOver = true
-        return
+        this.gameOver = true;
+        return;
       }
 
       if (
@@ -235,8 +257,8 @@ export const useGameStore = defineStore('game', {
           (server: any) => server.status === ServerStatus.Burning
         )
       ) {
-        this.gameOver = true
-        return
+        this.gameOver = true;
+        return;
       }
 
       if (
@@ -249,61 +271,61 @@ export const useGameStore = defineStore('game', {
         // start a server
         const nextOffline = this.servers.find(
           (server: any) => server.status === ServerStatus.Offline
-        )
+        );
         if (nextOffline) {
-          nextOffline.status = ServerStatus.Online
+          nextOffline.status = ServerStatus.Online;
         } else {
-          this.gameOver = true
-          return
+          this.gameOver = true;
+          return;
         }
       }
 
       const moneySpent = this.servers.filter(
         (server: any) => server.status === ServerStatus.Online
-      ).length
-      this.character.money = this.character.money - moneySpent
+      ).length;
+      this.character.money = this.character.money - moneySpent;
 
       // update the game state
       this.load = Math.min(
         1,
         Math.abs(noise.perlin2(Math.floor(this.time / 100) / 10, 0.1) * 1.6) +
           this.time / 50_000
-      )
-      this.time = this.time + 1
+      );
+      this.time = this.time + 1;
 
       this.capacity =
         this.servers.filter(
           (server: any) => server.status === ServerStatus.Online
-        ).length / this.servers.length
+        ).length / this.servers.length;
 
-      const { load, servers } = this
+      const { load, servers } = this;
       if (shouldServerHeatUp({ load, servers })) {
         if (this.heatUpTime === -1) {
-          this.heatUpTime = this.time - 1
+          this.heatUpTime = this.time - 1;
         }
-        const heatGenerated = 0.8 / Math.sqrt(this.time - this.heatUpTime)
+        const heatGenerated = 0.8 / Math.sqrt(this.time - this.heatUpTime);
 
         //console.log('heatGenerated', heatGenerated)
-        addServerHeatUp({ servers, heatGenerated })
+        addServerHeatUp({ servers, heatGenerated });
       } else {
-        this.heatUpTime = -1
-        coolDownServers({ servers })
+        this.heatUpTime = -1;
+        coolDownServers({ servers });
       }
 
-      const avgTemp = getAverageTemp({ servers: this.servers })
-      this.averageTemp = avgTemp
+      const avgTemp = getAverageTemp({ servers: this.servers });
+      this.averageTemp = avgTemp;
 
-      updateMood({ location: this.location, character: this.character })
+      updateMood({ location: this.location, character: this.character });
     },
     changeLocation(location: string) {
-      this.location = location
+      this.location = location;
     },
     toggleServer(index: number) {
-      const server = this.servers[index]
+      const server = this.servers[index];
       if (server.status === ServerStatus.Online) {
-        server.status = ServerStatus.Offline
+        server.status = ServerStatus.Offline;
       } else if (server.status === ServerStatus.Offline) {
-        server.status = ServerStatus.Online
+        server.status = ServerStatus.Online;
       }
     },
     async notify(event: GameEvent) {
@@ -316,19 +338,19 @@ export const useGameStore = defineStore('game', {
           this.character.x === event.payload.x &&
           this.character.y === event.payload.y
         )
-          return
-        soundManager.play('697182__znukem__single-footstep.mp3')
-        this.character.x = event.payload.x
-        this.character.y = event.payload.y
-        this.character.state = CharacterState.Walking
+          return;
+        soundManager.play("697182__znukem__single-footstep.mp3");
+        this.character.x = event.payload.x;
+        this.character.y = event.payload.y;
+        this.character.state = CharacterState.Walking;
         // busy wait for 1 second
-        await new Promise((resolve) => setTimeout(resolve, 400))
+        await new Promise((resolve) => setTimeout(resolve, 400));
       }
       if (
         event.actor === ActorType.Character &&
         event.type === CharacterEvents.Stop
       ) {
-        this.character.state = CharacterState.Idle
+        this.character.state = CharacterState.Idle;
       }
       if (
         event.actor === ActorType.Character &&
@@ -338,33 +360,55 @@ export const useGameStore = defineStore('game', {
           !this.character.petTimes[event.payload.name] ||
           this.time - this.character.petTimes[event.payload.name] > petTimeout
         ) {
-          console.log(this.time, this.character.petTimes[event.payload.name])
+          console.log(this.time, this.character.petTimes[event.payload.name]);
           // check if lucy has been petted before
-          this.character.petTimes[event.payload.name] = this.time
-          this.character.mood = Math.min(1, this.character.mood + 0.1)
-          soundManager.play(event.payload.sound)
+          this.character.petTimes[event.payload.name] = this.time;
+          this.character.mood = Math.min(1, this.character.mood + 0.1);
+          soundManager.play(event.payload.sound);
         }
       }
       if (
         event.actor === ActorType.Server &&
         event.type === ServerEvents.Extinguish
       ) {
-        const server = this.servers[event.payload.index]
+        const server = this.servers[event.payload.index];
         if (server.status === ServerStatus.Burning) {
           if (server.tappedTimes >= 10) {
-            server.tappedTimes = 0
-            server.status = ServerStatus.Offline
-            server.temp = 70
+            server.tappedTimes = 0;
+            server.status = ServerStatus.Offline;
+            server.temp = 70;
           }
-          server.tappedTimes = server.tappedTimes + 1
+          server.tappedTimes = server.tappedTimes + 1;
         }
       }
       if (event.actor === ActorType.Sound) {
-        ;(soundManager as any)[event.type]?.(event.payload)
+        (soundManager as any)[event.type]?.(event.payload);
       }
       if (event.actor === ActorType.Scene) {
-        ;(sceneManager as any)[event.type]?.(event.payload)
+        (sceneManager as any)[event.type]?.(event.payload);
       }
-    }
-  }
-})
+    },
+    calculatePoints(
+      isGameOver: boolean = false,
+      currentTemp: number,
+      currentMood: number,
+      currentEnergyQuota: number,
+      time: number,
+      countDownTimer: number
+    ) {
+        // Define rules for temperature
+        var temperature_points = Math.floor(MAX_HEAT - currentTemp) // Higher points for lower temperature
+
+        // Define rules for mood
+        var mood_points = Math.floor(currentMood * 100); // Higher points for higher mood
+
+        // Define rules for energy quota
+        var energy_points = Math.floor(currentEnergyQuota); // Higher points for higher energy quota
+
+      if (isGameOver) {
+        return (temperature_points * mood_points * energy_points) * time;
+      }
+      return (temperature_points * mood_points * energy_points) * (time - countDownTimer);
+    },
+  },
+});
